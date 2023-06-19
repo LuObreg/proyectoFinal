@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2020",  // Versión de JavaScript a la que se va a compilar
+    "module": "commonjs",  // Sistema de módulos a utilizar (en el caso de Node.js, "commonjs" es comúnmente utilizado)
+    "outDir": "dist",  // Carpeta de salida para los archivos compilados
+    "strict": true,  // Habilita las comprobaciones estrictas de tipos
+    "esModuleInterop": true,  // Permite la importación de módulos de CommonJS usando la sintaxis de ES Modules
+    "resolveJsonModule": true,  // Habilita la importación de archivos JSON como módulos
+    "rootDir": "backend/src",  // Carpeta raíz del proyecto donde se encuentran los archivos fuente TypeScript
+    "moduleResolution": "node",  // Resolución de módulos para Node.js
+    "sourceMap": true  // Genera archivos de mapeo de origen para facilitar la depuración
+  },
+  "include": [
+    "backend/src/**/*.ts"  // Patrón que especifica qué archivos TypeScript se deben incluir en la compilación
+, "backend/src/index.ts"  ],
+  "exclude": [
+    "node_modules"  // Carpeta que se excluye de la compilación
+  ]
+}
