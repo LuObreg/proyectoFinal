@@ -1,5 +1,4 @@
-var nodemailer = require("nodemailer");
-import { MailOptions } from '../models/Mail';
+import nodemailer from "nodemailer";
 
 // Configuración de transporte de correo
 const transporter = nodemailer.createTransport({
@@ -10,10 +9,9 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
-async function mailer(mailOptions: MailOptions): Promise<{ response: string }> {
-  return new Promise<{ response: string }>((resolve, reject) => {
-    transporter.sendMail(mailOptions, (error: Error | null, info: string) => {
+export async function mailer(mailOptions) {
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error(error);
         reject('Error al enviar el mensaje');
@@ -24,6 +22,3 @@ async function mailer(mailOptions: MailOptions): Promise<{ response: string }> {
     });
   });
 }
-
-
- export {mailer};

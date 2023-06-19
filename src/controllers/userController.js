@@ -1,20 +1,17 @@
-import { Request, Response } from 'express';
-import { User } from '../models/User';
-import { generateHash } from '../helpers/encrypt';
-const bcrypt = require('bcrypt');
+import bcrypt from "bcrypt";
 
 const secretPassword = '$2b$10$HetQ66oQKr5YvUi8M/Rl4uawwMTcF5SOPkCpGz9azTg13hXn7TMWO';
 
-export const loginUser = async (req: Request, res: Response) => {
-  const userData: User = req.body; // Asigna los datos del body a una variable de tipo User
-
+export const loginUser = async (req, res) => {
+  const userData = req.body; // Asigna los datos del body a una variable de tipo User
+console.log("userdata ", userData)
   // Validación de los datos
   if (!userData.username || !userData.password) {
     return res.status(400).json({ message: 'Username and password are required' });
   }
 
   try {
-    const result = await bcrypt.compare(userData.password, secretPassword);
+    const result = await bcrypt.compare(userData.password.toString(), secretPassword);
     
     if (result) {
       return res.status(200).json({ message: 'Login successful' });
