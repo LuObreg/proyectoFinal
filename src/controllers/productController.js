@@ -1,58 +1,77 @@
-let products = [
-  { id: 1, name: 'Product 1', price: 10 },
-  { id: 2, name: 'Product 2', price: 20 },
-  { id: 3, name: 'Product 3', price: 30 },
-];
+import Product from '../models/product.schema.js'; 
 
-export const getAllProducts = (req, res) => {
-  res.status(200).json(products);
-};
-
-/*
-exports.updateProduct = (req, res) => {
-  const { id } = req.params;
-  const { name, price } = req.body;
-
-  const productIndex = products.findIndex(product => product.id === Number(id));
-  if (productIndex === -1) {
-    return res.status(404).json({ message: 'Product not found' });
+export const getAllProducts = async (req, res) => {
+  try {
+    console.log('éjecutando')
+    const products = await Product.find({}).exec();
+    console.log(products);
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error al buscar productos:', error);
+    res.status(500).json({ error: 'Error al buscar productos' });
   }
-
-  const updatedProduct = {
-    id: products[productIndex].id,
-    name: name || products[productIndex].name,
-    price: price || products[productIndex].price,
-  };
-
-  products[productIndex] = updatedProduct;
-
-  res.status(200).json(updatedProduct);
 };
 
-exports.addProduct = (req, res) => {
-  const { name, price } = req.body;
+// Controlador para crear un nuevo producto
+export const createProduct = async (req, res) => {
+  try {
+    const { name, price } = req.body; // Obtener datos del cuerpo de la solicitud
 
-  const newProduct = {
-    id: products.length + 1,
-    name,
-    price,
-  };
+    // Crear un nuevo producto
+    const newProduct = new Product({
+      name,
+      price,
+    });
 
-  products.push(newProduct);
+    // Guardar el producto en la base de datos
+    const savedProduct = await newProduct.save();
 
-  res.status(201).json(newProduct);
-};
-
-exports.deleteProduct = (req, res) => {
-  const { id } = req.params;
-
-  const productIndex = products.findIndex(product => product.id === Number(id));
-  if (productIndex === -1) {
-    return res.status(404).json({ message: 'Product not found' });
+    res.status(201).json(savedProduct);
+  } catch (error) {
+    console.error('Error al crear un producto:', error);
+    res.status(500).json({ error: 'Error al crear un producto' });
   }
-
-  const deletedProduct = products.splice(productIndex, 1)[0];
-
-  res.status(200).json(deletedProduct);
 };
-*/
+
+// Controlador para actualizar un producto por su ID
+export const updateProductById = async (req, res) => {
+  try {
+    const productId = req.params.id; // Obtener el ID del parámetro de la URL
+    const { name, price } = req.body; // Obtener datos actualizados del cuerpo de la solicitud
+
+    // Buscar el producto por su ID en la base de datos y actualizarlo
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { name, price },
+      { new: true } // Devolver el documento actualizado
+    ).exec();
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error('Error al actualizar un producto por su ID:', error);
+    res.status(500).json({ error: 'Error al actualizar un producto por su ID' });
+  }
+};
+
+// Controlador para eliminar un producto por su ID
+export const deleteProductById = async (req, res) => {
+  try {
+    const productId = req.params.id; // Obtener el ID del parámetro de la URL
+
+    // Buscar el producto por su ID en la base de datos y eliminarlo
+    const deletedProduct = await Product.findByIdAndDelete(productId).exec();
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+
+    res.status(204).send(); // Respuesta sin contenido (producto eliminado con éxito)
+  } catch (error) {
+    console.error('Error al eliminar un producto por su ID:', error);
+    res.status(500).json({ error: 'Error al eliminar un producto por su ID' });
+  }
+};
