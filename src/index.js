@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(
   cors({
     origin: '*', // Permite solicitudes desde cualquier origen
-    methods: ['GET', 'POST'], // Especifica los métodos permitidos
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Especifica los métodos permitidos
     allowedHeaders: ['Content-Type'], // Especifica los encabezados permitidos
   })
 );
