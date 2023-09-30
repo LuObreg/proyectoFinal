@@ -1,12 +1,11 @@
 import { mailer } from "../helpers/mailer.js";
 
 export const sendEmail = async (req, res) => {
-  console.log(req.body);
-  const { name, email, message } = req.body;
   const mailOptions = {
-    name,
-    email,
-    message
+    from: req.body.email,
+    to: 'lu.obregon@hotmail.com',
+    subject: `Mensaje de ${req.body.name}`,
+    text: req.body.message,
   };
   try {
     const info = await mailer(mailOptions);
