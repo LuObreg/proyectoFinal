@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import config from '../config.js';
 
-const mongoURI = `${config.mongoURI}/citizenia`; // Agrega /citizenia al final de la URL de conexión
+const mongoURI = `${config.mongoURI}/citizenia`;
 
 const connectToDatabase = async () => {
   try {

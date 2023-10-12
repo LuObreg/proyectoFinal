@@ -10,9 +10,9 @@ export const sendEmail = async (req, res) => {
   try {
     const info = await mailer(mailOptions);
     console.log('Mensaje enviado: ' + info.response);
-    res.send('Mensaje enviado correctamente');
+    return res.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al enviar el mensaje');
+    return res.status(500).json({ success: false});
   }
 };
