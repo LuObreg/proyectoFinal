@@ -2,7 +2,6 @@ import Product from '../models/product.schema.js';
 
 export const getAllProducts = async (req, res) => {
   try {
-    console.log('éjecutando')
     const products = await Product.find({}).exec();
     console.log(products);
     res.status(200).json(products);

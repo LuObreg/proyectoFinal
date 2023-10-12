@@ -14,10 +14,10 @@ export async function mailer(mailOptions) {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error(error);
-        reject('Error al enviar el mensaje');
+        resolve({ message: 'fail' });
       } else {
-        console.log('Mensaje enviado: ' + info);
-        resolve({ response: 'Mensaje enviado correctamente' });
+        console.log('Mensaje enviado: ', info.message);
+        resolve({ message: 'Enviado correctamente' });
       }
     });
   });
